@@ -1,61 +1,47 @@
 import pathlib
-import re
+from collections import defaultdict
 
 path = pathlib.Path("2023", "day_3.txt")
 
 with open(path, "rt") as file:
     all_lines = [[c for c in line if c != '\n'] for line in file.readlines()]
 
-file_lenght = (len(all_lines) -1)
-line_lenght = (len(all_lines[0]) -1) 
+file_lenght = len(all_lines)
+line_lenght = len(all_lines[0])
 
 sum1 = 0
-search = re.compile(r"[^0-9.]")
+sum2 = 0
 
-for index_line , line in enumerate(all_lines):
+gear_number = defaultdict(list)
+
+for i_line in range(file_lenght):
     number = 0
-    flag = False
-    is_last = False
-    for index_digit, digit in enumerate(line):
-        if re.match(r"[0-9]", digit):
-            number = (number * 10) + int(digit)
-            if (index_line > 0) and (index_line < file_lenght):
-                if search.match(all_lines[index_line-1][index_digit]) or search.match(all_lines[index_line+1][index_digit]): #in alto e in basso
-                    flag = True
-                if index_digit > 0:
-                    if search.match(all_lines[index_line-1][index_digit-1]) or search.match(all_lines[index_line][index_digit-1]) or search.match(all_lines[index_line+1][index_digit-1]): #in alto a sinistra, sinistra e in basso a sinistra
-                        flag = True                    
-                if index_digit < line_lenght:
-                    if search.match(all_lines[index_line-1][index_digit+1]) or search.match(all_lines[index_line][index_digit+1]) or search.match(all_lines[index_line+1][index_digit+1]): #in alto a destra, destra e in basso a destra
-                        flag = True
-            else:
-                if index_line == 0:
-                    if search.match(all_lines[index_line+1][index_digit]): #in basso
-                        flag = True
-                    if index_digit > 0:
-                        if search.match(all_lines[index_line+1][index_digit-1]) or search.match(all_lines[index_line][index_digit-1]): #in basso a sinistra e sinistra
-                            flag = True                    
-                    if index_digit < line_lenght:
-                        if search.match(all_lines[index_line+1][index_digit+1]) or search.match(all_lines[index_line][index_digit+1]): #in basso a destra e destra
-                            flag = True
-                else:
-                    if search.match(all_lines[index_line-1][index_digit]): #in alto
-                        flag = True
-                    if index_digit > 0:
-                        if search.match(all_lines[index_line-1][index_digit-1]) or search.match(all_lines[index_line][index_digit-1]): #in alto a sinistra e sinistra
-                            flag = True                    
-                    if index_digit < line_lenght:
-                        if search.match(all_lines[index_line-1][index_digit+1]) or search.match(all_lines[index_line][index_digit+1]): #in alto a destra e destra
-                            flag = True
-            if index_digit == line_lenght:
-                is_last = True
-        else:
-            if flag:
+    is_part = False
+    gears = set()
+    for i_digit in range(line_lenght+1):
+        if (i_digit < line_lenght) and all_lines[i_line][i_digit].isdigit():
+            number = (number * 10) + int(all_lines[i_line][i_digit])
+            for lineline in [-1,0,1]:
+                for digitdigit in [-1,0,1]:
+                    if (0<=(i_line+lineline)<file_lenght) and (0<=(i_digit+digitdigit)<line_lenght):
+                        check = all_lines[i_line+lineline][i_digit+digitdigit]
+                        if (not check.isdigit()) and (check != '.'):
+                            is_part = True
+                        if check == '*':
+                            gears.add((i_line+lineline,i_digit+digitdigit))
+        elif number > 0:
+            if is_part:
                 sum1 += number
-            flag = False
+            for gear in gears:
+                    gear_number[gear].append(number)
+            is_part = False
             number = 0
-    if flag and is_last:
-        sum1 += number      
+            gears = set()
 
 print(sum1)
 
+for key,value in gear_number.items():
+    if len(value)==2:
+        sum2 += value[0]*value[1]
+
+print(sum2)
