@@ -1,14 +1,12 @@
-import pathlib
 import re
 
-path = pathlib.Path("2023", "day_2.txt")
 sum1 = 0
 sum2=0
 game_counter = 0
 
 max_cubes = {"red": 12, "green": 13, "blue": 14}
 
-with open(path, "rt") as file:
+with open("day_2.txt", "rt") as file:
     for line in file:
         game_counter += 1
         sub_games = re.search(":(.*)", line).group(1)

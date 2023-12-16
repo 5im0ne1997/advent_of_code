@@ -1,9 +1,7 @@
-import pathlib
 from collections import defaultdict
 
-path = pathlib.Path("2023", "day_3.txt")
 
-with open(path, "rt") as file:
+with open("day_3.txt", "rt") as file:
     all_lines = [[c for c in line if c != '\n'] for line in file.readlines()]
 
 file_lenght = len(all_lines)

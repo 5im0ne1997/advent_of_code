@@ -1,11 +1,7 @@
-import pathlib
-
-path=pathlib.Path("2023","day_1.txt")
-
 sum1 = 0
 sum2 = 0
 
-with open(path) as file:
+with open("day_1.py") as file:
     for line in file.readlines():
         list1 = []
         list2 = []
