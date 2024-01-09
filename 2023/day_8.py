@@ -30,10 +30,9 @@ class Game:
             self.findallstartpositions()
         else:
             self.startpositions.append('AAA')
-        self.startpositions
         for index, position in enumerate(self.startpositions):
             self.result[index] = 0
-            while True: #position != 'ZZZ':
+            while True:
                 if self.ispart2 and position.endswith("Z"):
                     break
                 elif position == "ZZZ":
