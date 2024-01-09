@@ -25,9 +25,7 @@ class Game:
     def findheandtype(self):
         for heand in self.heands:
             cardcount = dict(Counter(heand[0]).items())
-            heandtype = list()
-            for c in cardcount.values():
-                heandtype.append(c)
+            heandtype = list(cardcount.values())
             heandtype.sort(reverse=True)
             match heandtype:
                 case [1,1,1,1,1]:
