@@ -1,19 +1,18 @@
 from pathlib import Path
 import re
-from collections import defaultdict
 from math import lcm
 
 class Game:
 
     def __init__(self, input, ispart2):
-        self.result = defaultdict(list)
+        self.result = dict()
         self.ispart2 = ispart2
         self.startpositions = list()
         with open(input) as file:
             all_line = file.read()
         self.instructions, map = all_line.split("\n\n")
         map = map.split("\n")
-        self.map = defaultdict(tuple)
+        self.map = dict()
         for x in map:
             start, rl = x.split(" = ")
             rl = re.findall(r"\w+", rl)
