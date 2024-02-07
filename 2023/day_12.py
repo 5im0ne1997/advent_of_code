@@ -1,6 +1,8 @@
 from pathlib import Path
 from copy import deepcopy
 
+row = 0
+
 def resolve(ds, dg):
     ds = ds
     dg = dg
@@ -39,6 +41,9 @@ def resolve(ds, dg):
                 if s[0][1] <= len(dg):
                     if s[0][2] == int(dg[s[0][1] - 1]):
                         solution[(f"{s[0][0]}.", s[0][1], 0)] = '.'
+    global row
+    row += 1
+    print(f"RIGA {row}: {len(solution)}")
     return len(solution)
                     
 
