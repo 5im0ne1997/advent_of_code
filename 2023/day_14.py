@@ -1,4 +1,5 @@
 from pathlib import Path
+from copy import deepcopy
 
 with open(Path("2023","day_14.txt")) as file:
     input = [[r for r in line] for line in file.read().split("\n")]
@@ -8,73 +9,48 @@ R = len(input)
 C = len(input[0])
 
 sum1 = 0
-for cycle in range(1000000000):
-    print(cycle)
-    for r in range(R):
-        for c in range(C):
-            if input[r][c] == 'O':
-                flag = True
-                nord = r - 1
-                previous = r
-                while flag:
-                    if (0 <= nord) and (input[nord][c] != '#') and (input[nord][c] != 'O'):
-                        input[nord][c] = 'O'
-                        input[previous][c] = '.'
-                        nord -= 1
-                        previous -= 1
-                    else:
-                        if cycle == 0:
-                            sum1 += R - previous
-                        flag = False
-    if cycle == 0:
-        print(sum1)
+cycle = 1000000000
+t = 0
+cycled_grids = {}
+while t != cycle:
+    t += 1
+    for x in range(4):
+        for r in range(R):
+            for c in range(C):
+                if input[r][c] == 'O':
+                    flag = True
+                    nord = r - 1
+                    previous = r
+                    while flag:
+                        if (0 <= nord) and (input[nord][c] != '#') and (input[nord][c] != 'O'):
+                            input[nord][c] = 'O'
+                            input[previous][c] = '.'
+                            nord -= 1
+                            previous -= 1
+                        else:
+                            if x == 0 and t == 1:
+                                sum1 += R - previous
+                            flag = False
+        if x == 0 and t == 1:
+            print(sum1)
 
-    for r in range(R):
-        for c in range(C):
-            if input[r][c] == 'O':
-                flag = True
-                west = c - 1
-                previous = c
-                while flag:
-                    if (0 <= west) and (input[r][west] != '#') and (input[r][west] != 'O'):
-                        input[r][west] = 'O'
-                        input[r][previous] = '.'
-                        west -= 1
-                        previous -= 1
-                    else:
-                        flag = False
+        rows = len(input)
+        cols = len(input[0])
+        # Crea una nuova matrice vuota ruotata
+        rotated_input = [['' for _ in range(rows)] for _ in range(cols)]
+        # Itera attraverso la matrice originale e copia i valori nella matrice ruotata
+        for i in range(rows):
+            for j in range(cols):
+                rotated_input[j][rows - i - 1] = input[i][j]
+        input = deepcopy(rotated_input)
+    
+    grid = tuple(tuple(row) for row in input)
+    if grid in cycled_grids:
+        cycle_lenght = t - cycled_grids[grid]
+        missed_cycle = (cycle - t) // cycle_lenght
+        t += missed_cycle * cycle_lenght
+    cycled_grids[grid] = t
 
-    for r in range(R):
-        r = R - r - 1
-        for c in range(C):
-            if input[r][c] == 'O':
-                flag = True
-                south = r + 1
-                previous = r
-                while flag:
-                    if (R > south) and (input[south][c] != '#') and (input[south][c] != 'O'):
-                        input[south][c] = 'O'
-                        input[previous][c] = '.'
-                        south += 1
-                        previous += 1
-                    else:
-                        flag = False
-
-    for r in range(R):
-        for c in range(C):
-            c = C - c -1
-            if input[r][c] == 'O':
-                flag = True
-                east = r + 1
-                previous = r
-                while flag:
-                    if (C > east) and (input[r][east] != '#') and (input[r][east] != 'O'):
-                        input[r][east] = 'O'
-                        input[r][previous] = '.'
-                        east += 1
-                        previous += 1
-                    else:
-                        flag = False
 
 sum2 = 0
 
