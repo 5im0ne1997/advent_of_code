@@ -1,10 +1,9 @@
 from pathlib import Path
-from abc import ABC
 
 with open(Path("2022","day_07.txt")) as file:
     commands = file.read().split("\n")
 
-class FileSystem(ABC):
+class FileSystem():
 
     def __init__(self, name: str, parent_directory: object = None, dimension: int = 0) -> None:
         self.name = name
