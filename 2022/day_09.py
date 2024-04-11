@@ -26,15 +26,15 @@ for line in moves:
         T_delta_y = H_position[1] - T_position[1]
         if (abs(T_delta_x) > 1):
             T_position = (T_position[0] + move_dir[direction][0], T_position[1] + move_dir[direction][1])
-            if T_delta_x > 1:
+            if T_delta_y > 0:
                 T_position = (T_position[0] + move_dir['U'][0], T_position[1] + move_dir['U'][1])
-            elif T_delta_x < -1:
+            elif T_delta_y < 0:
                 T_position = (T_position[0] + move_dir['D'][0], T_position[1] + move_dir['D'][1])
         elif (abs(T_delta_y) > 1):
             T_position = (T_position[0] + move_dir[direction][0], T_position[1] + move_dir[direction][1])
-            if T_delta_y > 1:
+            if T_delta_x > 0:
                 T_position = (T_position[0] + move_dir['R'][0], T_position[1] + move_dir['R'][1])
-            elif T_delta_y < -1:
+            elif T_delta_x < 0:
                 T_position = (T_position[0] + move_dir['L'][0], T_position[1] + move_dir['L'][1])
         T_visited_part1[T_position]  += 1
 
