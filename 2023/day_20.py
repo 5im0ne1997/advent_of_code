@@ -1,6 +1,7 @@
 from pathlib import Path
 from abc import ABC, abstractmethod
 from copy import copy
+from math import lcm
 
 class Module(ABC):
 
@@ -75,7 +76,6 @@ class Conjunction(Module):
                 self.high_sended += 1
             else:
                 self.low_sended += 1
-                print(f"{self.name} {self.linked_from}")
 
 class Broadcaster(Module):
 
@@ -145,28 +145,38 @@ if __name__ == "__main__":
     all_modules['button'].add_link_to(all_modules['broadcaster'])
 
     counter = 0
-    while counter < 1000:
+    solution_2 = {}
+    while len(solution_2) <4:
         queue = [all_modules["button"]]
         counter += 1
         while len(queue) > 0:
             temp_queue = []
             for pulse_to_send in queue:
                 pulse_to_send.send_pulses()
-                if all_modules['rx'].low_pulse_recived == 1:
-                    sum_low_2 = 0
-                    sum_high_2 = 0
-                    for module in all_modules.values():
-                        sum_low_2 += module.low_sended
-                        sum_high_2 += module.high_sended
+                if pulse_to_send.name == 'gf':
+                    if 'kr' not in solution_2:
+                        if all_modules['gf'].linked_from['kr']:
+                            solution_2['kr'] = copy(counter)
+                    if 'zs' not in solution_2:
+                        if all_modules['gf'].linked_from['zs']:
+                            solution_2['zs'] = copy(counter)
+                    if 'kf' not in solution_2:
+                        if all_modules['gf'].linked_from['kf']:
+                            solution_2['kf'] = copy(counter)
+                    if 'qk' not in solution_2:
+                        if all_modules['gf'].linked_from['qk']:
+                            solution_2['qk'] = copy(counter)
                 for sender in pulse_to_send.linked_to:
                     if sender.can_send_pulse:
                         temp_queue.append(sender)
             queue = copy(temp_queue)
-
-    sum_low_1 = 0
-    sum_high_1 = 0
-    for module in all_modules.values():
-        sum_low_1 += module.low_sended
-        sum_high_1 += module.high_sended
+        
+        if counter == 1000:
+            sum_low_1 = 0
+            sum_high_1 = 0
+            for module in all_modules.values():
+                sum_low_1 += module.low_sended
+                sum_high_1 += module.high_sended
     print(f"Solution 1: {sum_low_1 * sum_high_1}")
-    print(f"Solution 2: {sum_low_2 * sum_high_2}")
+    solution_2 = list(solution_2.values())
+    print(f"Solution 2: {lcm(*solution_2)}")
