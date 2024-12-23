@@ -5,7 +5,7 @@ use std::io::BufReader;
 fn main() {
     let input_file = BufReader::new(File::open("./src/input.txt").expect("Fail to read file"));
     let mut safe_report: u32 = 0;
-    for (idil, line) in input_file.lines().enumerate() {
+    for line in input_file.lines() {
         let mut previous_number: u32 = 0;
         let mut up = false;
         let mut down = false;
