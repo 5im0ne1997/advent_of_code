@@ -22,10 +22,13 @@ fn main() {
     b.sort();
     
     let mut sum1: u32 = 0;
+    let mut sum2: u32 = 0;
     let mut i = 0;
     for a_number in a {
         sum1 += (a_number as f32 - b[i] as f32).abs() as u32;
+        sum2 += a_number * b.clone().into_iter().filter(|x| *x == a_number).count() as u32;
         i += 1;
     }
     println!("Part 1 result: {sum1}");
+    println!("Part 2 result: {sum2}");
 }
