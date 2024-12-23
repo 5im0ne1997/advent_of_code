@@ -4,26 +4,40 @@ use std::io::BufReader;
 
 fn main() {
     let input_file = BufReader::new(File::open("./src/input.txt").expect("Fail to read file"));
-    let mut safe_report: u32 = 0;
+    let mut safe_report1: u32 = 0;
+    let mut safe_report2: u32 = 0;
     for line in input_file.lines() {
         let mut list_number: Vec<u32> = Vec::new();
         for number in line.unwrap().split_whitespace() {
             list_number.push(number.parse().unwrap());
         }
-        if resolve(list_number) {
-            safe_report += 1;
+
+        if resolve(list_number.clone()) {
+            safe_report1 += 1;
+            safe_report2 += 1;
+        } else {
+            let vec_lenght = list_number.len();
+            for i_for_lenght in 0..=vec_lenght - 1 {
+                let mut temp_vec: Vec<u32> = list_number.clone();
+                temp_vec.remove(i_for_lenght);
+                if resolve(temp_vec.clone()) {
+                    safe_report2 += 1;
+                    break;
+                }
+            }
         }
     }
 
-    println!("{safe_report}");
+    println!("{safe_report1}");
+    println!("{safe_report2}");
 }
 
-fn resolve(list_number: Vec<u32>) -> bool {
+fn resolve(list: Vec<u32>) -> bool {
     let mut previous_number: u32 = 0;
     let mut up = false;
     let mut down = false;
     let mut flag = true;
-    for (i, number) in list_number.into_iter().enumerate() {
+    for (i, number) in list.into_iter().enumerate() {
         let current_number: u32 = number;
         if i == 0 {
             previous_number = current_number;
