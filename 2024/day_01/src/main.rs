@@ -21,11 +21,11 @@ fn main() {
     a.sort();
     b.sort();
     
-    let mut sum: u32 = 0;
+    let mut sum1: u32 = 0;
     let mut i = 0;
     for a_number in a {
-        sum += (a_number as f32 - b[i] as f32).abs() as u32;
+        sum1 += (a_number as f32 - b[i] as f32).abs() as u32;
         i += 1;
     }
-    println!("Part 1 result: {sum}");
+    println!("Part 1 result: {sum1}");
 }
