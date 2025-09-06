@@ -6,9 +6,16 @@ def solution(input_memory: str):
     separator_found = False
     mul_close = False
 
+    do_mul = True
+
     sum_1 = 0
+    sum_2 = 0
 
     for i, ch in enumerate(input_memory):
+        if input_memory[i:].startswith("do()"):
+            do_mul = True
+        if input_memory[i:].startswith("don't()"):
+            do_mul = False
         if input_memory[i:].startswith("mul(") and not mul_found:
             mul_found = True
             position_mul_found = 0
@@ -29,6 +36,8 @@ def solution(input_memory: str):
 
         if mul_found and first_oper and separator_found and second_opr and mul_close:
             sum_1 += int(first_oper) * int(second_opr)
+            if do_mul:
+                sum_2 += int(first_oper) * int(second_opr)
             mul_found = False
 
         if not mul_found:
@@ -39,6 +48,7 @@ def solution(input_memory: str):
             mul_close = False
 
     print(f"Solution part 1 is {sum_1}")
+    print(f"Solution part 2 is {sum_2}")
 
 
 if __name__ == "__main__":
