@@ -8,6 +8,7 @@ def check_correct_update(update: list[str]):
                     return False
     return True
 
+
 with open("input.txt", mode="r", encoding="UTF-8") as file:
     first_part, second_part = file.read().strip().split("\n\n")
     ORDENING_RULES = defaultdict(list)
