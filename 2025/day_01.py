@@ -10,18 +10,11 @@ position = 50
 solution_1 = 0
 
 for direction, distance in moves:
-    temp_position = copy.copy(position)
     if direction == 'L':
-        temp_position -= distance
-        
+        position -= distance
     elif direction == 'R':
-        temp_position += distance
-    if temp_position > 99:
-            position = temp_position - 100
-    elif temp_position < 0:
-        position = temp_position + 100
-    else:
-        position = copy.copy(temp_position)
+        position += distance
+    position = position % 100
     if position == 0:
         solution_1 += 1
 
