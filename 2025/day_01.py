@@ -16,12 +16,18 @@ for direction, distance in moves:
         position -= distance
     elif direction == 'R':
         position += distance
-    if position != 100 and previous_position != 0:
+    
+    if position > 99:
         solution_2 += abs(position // 100)
+    elif position < 1:
+        solution_2 += ((previous_position -1)// 100) - ((position-1)//100)
+    
+    
     position = position % 100
+
     if position == 0:
         solution_1 += 1
-        solution_2 += 1
+
     previous_position = copy(position)
 
 print(solution_1)
